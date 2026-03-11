@@ -22,7 +22,7 @@ appsettings.Development.json
 appsettings.json
 
 # Database
-*ems.db
+*.db
 
 # Visual Studio
 .vs/

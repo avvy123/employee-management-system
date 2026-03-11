@@ -19,7 +19,6 @@ obj/
 
 # Local config
 appsettings.Development.json
-appsettings.json
 
 # Database
 *.db

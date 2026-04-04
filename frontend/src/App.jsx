@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
 import Landing from './pages/Landing';
+import ForgotPasswordPage from './pages/ForgotPassword';
 
 /* =======================
    Lazy Loaded Components
@@ -57,6 +58,7 @@ function App() {
               <Route path="/" element={<Landing />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
               {/* Protected Routes */}
               <Route

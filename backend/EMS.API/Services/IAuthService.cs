@@ -6,5 +6,6 @@ namespace EMS.API.Services
     {
         Task<AuthResponseDto?> LoginAsync(LoginDto dto);
         Task<bool> RegisterAsync(RegisterDto dto);
+        Task<bool> ResetPasswordAsync(ResetPasswordDto dto);
     }
 }

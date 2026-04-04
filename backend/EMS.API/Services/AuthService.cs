@@ -63,6 +63,20 @@ namespace EMS.API.Services
             };
         }
 
+        public async Task<bool> ResetPasswordAsync(ResetPasswordDto dto)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == dto.Username);
+
+            if (user == null)
+                return false;
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         private string GenerateJwtToken(string userId, string username, string role)
         {
             var jwtSettings = _configuration.GetSection("Jwt");

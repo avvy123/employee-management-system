@@ -39,7 +39,17 @@ namespace EMS.API.Controllers
             if (result == null)
                 return Unauthorized(new { message = "Invalid username or password" });
 
-            return Ok(result); // returns Token + Username
+            return Ok(result);
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
+        {
+            var result = await _authService.ResetPasswordAsync(dto);
+
+            if (!result) return NotFound("User not found");
+
+            return Ok("Password updated successfully");
         }
     }
 }

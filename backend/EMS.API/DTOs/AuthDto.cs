@@ -16,6 +16,15 @@ namespace EMS.API.DTOs
         public string Password { get; set; } = string.Empty;
     }
 
+    public class ResetPasswordDto
+    {
+        [Required]
+        public string Username { get; set; } = string.Empty;
+
+        [Required]
+        public string Password { get; set; } = string.Empty;
+    }
+
     public class AuthResponseDto
     {
         public string Token { get; set; } = string.Empty;

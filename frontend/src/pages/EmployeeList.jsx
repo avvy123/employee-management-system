@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import EmployeeCard from "../components/Employee/EmployeeCard";
 import SearchBar from "../components/SearchBar";
@@ -11,6 +11,7 @@ function EmployeeList() {
     const queryClient = useQueryClient();
 
     const [searchQuery, setSearchQuery] = useState("");
+    const [debouncedQuery, setDebouncedQuery] = useState("");
 
     const [deleteModal, setDeleteModal] = useState({
         isOpen: false,
@@ -22,18 +23,24 @@ function EmployeeList() {
         employee: null,
     });
 
-    // Fetch employees
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedQuery(searchQuery);
+        }, 400);
+
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
+
     const { data: employees = [], isLoading } = useQuery({
-        queryKey: ["employees", searchQuery],
+        queryKey: ["employees", debouncedQuery],
         queryFn: () =>
-            searchQuery.trim()
-                ? employeeService.search(searchQuery).then((res) => res.data)
+            debouncedQuery.trim()
+                ? employeeService.search(debouncedQuery).then((res) => res.data)
                 : employeeService.getAll().then((res) => res.data),
         staleTime: 5 * 60 * 1000,
         keepPreviousData: true,
     });
 
-    // Delete employee
     const deleteMutation = useMutation({
         mutationFn: (id) => employeeService.delete(id),
         onSuccess: () => {
@@ -126,7 +133,9 @@ function EmployeeList() {
                     id={editModal.employee?.id}
                     isOpen={editModal.isOpen}
                     onClose={closeEditModal}
-                    onSuccess={() => queryClient.invalidateQueries(["employees"])}
+                    onSuccess={() =>
+                        queryClient.invalidateQueries(["employees"])
+                    }
                 />
             </Modal>
         </div>
